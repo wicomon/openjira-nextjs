@@ -14,6 +14,7 @@ export const SideBar = () => {
       anchor="left"
       open={sidemenuOpone}
       onClose={CloseSideMenu}
+      
     >
       <Box sx={{width: 250}} >
       <Box sx={{padding: '5px 10px'}} >

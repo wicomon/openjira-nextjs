@@ -1,10 +1,15 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import AddIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { EntriesContext } from '../../context/entries/';
+import { UIContext } from '../../context/ui/';
 
 export const NewEntry = () => {
-  const [adding, setAdding] = useState(false);
+
+  const {addEntry} = useContext(EntriesContext);
+  const {isAddingEntry, SetIsAddingEntry} = useContext(UIContext);
+
   const [inputValue, setInputValue] = useState('');
   const [touched, setTouched] = useState(false);
 
@@ -12,14 +17,18 @@ export const NewEntry = () => {
     setInputValue(e.target.value);
   }
 
-  const onSave = () => {
+  const onSave = () => { 
     if (inputValue.length === 0) return;
-    console.log({inputValue});
+    // console.log({inputValue});
+    addEntry(inputValue);
+    setInputValue('');
+    SetIsAddingEntry(false);
+    setTouched(false)
   }
 
   return (
     <Box sx={{ marginBottom: 2, paddingX: 2 }}>
-      {adding ? (
+      {isAddingEntry ? (
         <>
           <TextField
             fullWidth
@@ -35,7 +44,7 @@ export const NewEntry = () => {
             onBlur={() => setTouched(true)}
           />
           <Box display="flex" justifyContent="space-between">
-            <Button variant="text" onClick={() => setAdding(false)}>Cancelar</Button>
+            <Button variant="text" onClick={() => SetIsAddingEntry(false)}>Cancelar</Button>
             <Button
               variant="outlined"
               color="secondary"
@@ -48,7 +57,7 @@ export const NewEntry = () => {
         </>
       ) : (
         <>
-          <Button startIcon={<AddIcon />} fullWidth variant="outlined" onClick={() => setAdding(true)} >
+          <Button startIcon={<AddIcon />} fullWidth variant="outlined" onClick={() => SetIsAddingEntry(true)} >
             Agregar Tarea
           </Button>
         </>
