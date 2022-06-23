@@ -13,8 +13,9 @@ export const NavBar = () => {
         <IconButton
           size='large'
           edge='start'
+          onClick={OpenSideMenu}
         >
-          <MenuOutlinedIcon onClick={OpenSideMenu} />
+          <MenuOutlinedIcon  />
         </IconButton>
         <Typography variant='h6' >Open Jira</Typography>
       </Toolbar>
