@@ -33,6 +33,7 @@ export const UIProvider:FC<PropsWithChildren> = ({children}) => {
     dispatch({type: 'UI - End Dragging'});
   }
 
+
   return(
     <UIContext.Provider value={{
       ...state,
@@ -40,7 +41,7 @@ export const UIProvider:FC<PropsWithChildren> = ({children}) => {
       CloseSideMenu,
       SetIsAddingEntry,
       startDragging,
-      endDragging,      
+      endDragging,
     }}>
       {children}
     </UIContext.Provider>
