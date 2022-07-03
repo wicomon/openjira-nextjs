@@ -5,20 +5,20 @@ import mongoose from "mongoose";
 // 2 = connecting
 // 3 = disconnecting
 const url = "mongodb+srv://wicovi:7XVVaEWkjCBFxuHj@cluster0.urvz0.mongodb.net/";
-const mongooConection = {
+const mongoConection = {
   isConnected: 0,
 };
 
 export const connect = async () => {
-  if (mongooConection.isConnected) {
+  if (mongoConection.isConnected) {
     console.log("Ya estamos conectados ");
     return;
   }
 
   if (mongoose.connections.length > 0) {
-    mongooConection.isConnected = mongoose.connections[0].readyState;
+    mongoConection.isConnected = mongoose.connections[0].readyState;
 
-    if (mongooConection.isConnected === 1) {
+    if (mongoConection.isConnected === 1) {
       console.log("Usando conexion anterior");
       return;
     }
@@ -26,7 +26,7 @@ export const connect = async () => {
   }
 
   await mongoose.connect(process.env.MONGO_URL || "");
-  mongooConection.isConnected = 1;
+  mongoConection.isConnected = 1;
   console.log("Conectado a MongoDB " + process.env.MONGO_URL);
 };
 
@@ -35,10 +35,13 @@ export const disconnect = async () => {
     return;
   }
 
-  if (mongooConection.isConnected === 0) {
+  if (mongoConection.isConnected === 0) {
     return;
   }
 
   await mongoose.disconnect();
+
+  mongoConection.isConnected = 0;
+
   console.log("Desconectado de MongoDB");
 };

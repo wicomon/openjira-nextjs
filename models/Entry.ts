@@ -17,7 +17,8 @@ const entrySchema = new Schema({
     default: 'pending'
   },
   createdAt: {
-    type: Number
+    type: Number,
+    default: Date.now()
   }
 });
 

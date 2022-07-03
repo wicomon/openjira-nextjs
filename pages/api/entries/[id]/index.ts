@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Entry, IEntry } from '../../../models';
+import { Entry, IEntry } from '../../../../models';
 import mongoose from 'mongoose';
-import { db } from '../../../database';
+import { db } from '../../../../database';
 
 type Data = 
  | {message: string}
@@ -17,10 +17,28 @@ export default function handler (req: NextApiRequest, res: NextApiResponse<Data>
   switch (req.method) {
     case 'PUT':
       return updateEntry(req, res);
+    case 'GET':
+      return getEntry(req, res);
     default:
       return res.status(200).json({ message: 'El endpoint no existe' })
   }
 
+}
+
+const getEntry = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+  // if(!mongoose.isValidObjectId(id)) {
+  //   return res.status(400).json({ message: 'El id no es valido'+id });
+  // }
+
+  await db.connect();
+  const entryIndDB = await Entry.findById(id);
+  await db.disconnect();
+
+  if(!entryIndDB) {
+    return res.status(404).json({ message: 'El entry no existe' });
+  }
+  return res.status(200).json(entryIndDB);
 }
 
 const updateEntry = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
